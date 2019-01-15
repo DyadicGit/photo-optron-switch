@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
 // machine variables
-const int ledPin = LED_BUILTIN;
-const int QRD1114_PIN = A0;
+const int ledPin = 3;
+const int QRD1114_PIN = 4;
 // state variables
 volatile byte ledState = LOW;
 bool objectDetected = false;
