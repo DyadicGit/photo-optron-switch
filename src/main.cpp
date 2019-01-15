@@ -1,8 +1,10 @@
 #include <Arduino.h>
 
 // machine variables
-const int ledPin = LED_BUILTIN;
-const int QRD1114_PIN = A0;
+const int ledPin = PD0;
+const int QRD1114_PIN = PC0;
+const int TRIGGER_DELAY = 1000;
+const int TRIGGER_VOLTAGE = 4.8;
 // state variables
 volatile byte ledState = LOW;
 bool objectDetected = false;
@@ -23,8 +25,6 @@ void setup()
 {
   pinMode(QRD1114_PIN, INPUT);
   pinMode(ledPin, OUTPUT);
-
-  // Serial.begin(9600);
 }
 
 void loop()
@@ -35,7 +35,6 @@ void loop()
   updateObjectDetectedState();
   delayLedStateChange();
   digitalWrite(ledPin, ledState);
-  // Serial.println(roundedPhotoOptronVoltage);
 }
 
 void readPhotoOptron() {
@@ -49,7 +48,7 @@ float roundToOneDecimal(float floatValue) {
 }
 
 void updateObjectDetectedState() {
-  if (roundedPhotoOptronVoltage < 3.5) {
+  if (roundedPhotoOptronVoltage <= TRIGGER_VOLTAGE) {
     objectDetected = true;
   } else {
     objectDetected = false;
@@ -62,7 +61,7 @@ void changeLedState() {
   }
 }
 void delayLedStateChange() {
-  if (isDelayTime(1000)) {
+  if (isDelayTime(TRIGGER_DELAY)) {
     changeLedState();
 	}
   if (!objectDetected) {
