@@ -13,7 +13,7 @@ float roundedPhotoOptronVoltage;
 
 void readPhotoOptron();
 float roundToOneDecimal(float floatValue) ;
-void updateObjectDetectedState();
+void setObjectDetectedState();
 void setLedStateWithDelay();
 
 // time delay declarations
@@ -32,7 +32,7 @@ void loop()
   currentMillis = millis();
 
   readPhotoOptron();
-  updateObjectDetectedState();
+  setObjectDetectedState();
   setLedStateWithDelay();
   digitalWrite(ledPin, ledState);
 }
@@ -47,7 +47,7 @@ float roundToOneDecimal(float floatValue) {
   return ((float)((int)(floatValue*10)))/10;
 }
 
-void updateObjectDetectedState() {
+void setObjectDetectedState() {
   if (roundedPhotoOptronVoltage <= TRIGGER_VOLTAGE) {
     objectDetected = true;
   } else {
