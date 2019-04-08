@@ -3,7 +3,7 @@
 // machine variables
 const int ledPin = PD0;
 const int QRD1114_PIN = PC0;
-const int TRIGGER_DELAY = 1000;
+const int TRIGGER_DELAY = 1400;
 const int TRIGGER_VOLTAGE = 4.8;
 // state variables
 volatile byte ledState = LOW;
@@ -14,7 +14,7 @@ float roundedPhotoOptronVoltage;
 void readPhotoOptron();
 float roundToOneDecimal(float floatValue) ;
 void updateObjectDetectedState();
-void delayLedStateChange();
+void setLedStateWithDelay();
 
 // time delay declarations
 unsigned long int currentMillis = 0;
@@ -33,7 +33,7 @@ void loop()
 
   readPhotoOptron();
   updateObjectDetectedState();
-  delayLedStateChange();
+  setLedStateWithDelay();
   digitalWrite(ledPin, ledState);
 }
 
@@ -55,15 +55,10 @@ void updateObjectDetectedState() {
   }
 }
 
-void changeLedState() {
-  if (objectDetected) {
+void setLedStateWithDelay() {
+  if (isDelayTime(TRIGGER_DELAY) && objectDetected) {
     ledState = HIGH;
   }
-}
-void delayLedStateChange() {
-  if (isDelayTime(TRIGGER_DELAY)) {
-    changeLedState();
-	}
   if (!objectDetected) {
     ledState = LOW;
   }
